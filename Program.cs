@@ -25,7 +25,7 @@ if (Directory.Exists(whatsappPath))
     });
 }
 
-// Servir arquivos estáticos do Instagram (quando existir)
+// Servir arquivos estáticos do Instagram
 var instagramPath = Path.Combine(builder.Environment.ContentRootPath, "Pages", "Instagram", "wwwroot");
 if (Directory.Exists(instagramPath))
 {
@@ -36,7 +36,7 @@ if (Directory.Exists(instagramPath))
     });
 }
 
-// Servir arquivos estáticos do Uber (quando existir)
+// Servir arquivos estáticos do Uber
 var uberPath = Path.Combine(builder.Environment.ContentRootPath, "Pages", "Uber", "wwwroot");
 if (Directory.Exists(uberPath))
 {

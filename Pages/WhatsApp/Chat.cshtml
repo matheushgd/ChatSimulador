@@ -1,7 +1,7 @@
 @page "/whatsapp/chat"
 @model ChatSimulador.Pages.WhatsApp.ChatModel
 @{
-    Layout = null; // ← ADICIONE ESTA LINHA
+    Layout = null;
     ViewData["Title"] = "WhatsApp - Chat";
 }
 <!DOCTYPE html>
@@ -11,16 +11,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="/whatsapp-assets/css/chat.css" /> <!-- ← MUDE PARA ESTE CAMINHO -->
+    <link rel="stylesheet" href="/whatsapp-assets/css/chat.css" />
 </head>
 
 <body>
     <div class="chat-container">
         <div class="chat-header">
+            <a href="/whatsapp" class="back-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                </svg>
+            </a>
             <img src="/whatsapp-assets/avatares/joao.png" alt="Avatar" class="header-avatar" />
-
             <div class="header-info">
                 <h3>João</h3>
+                <span class="header-status">online</span>
+            </div>
+            <div class="header-actions">
+                <button title="Chamada de voz">📞</button>
+                <button title="Chamada de vídeo">📹</button>
+                <button title="Mais opções">⋮</button>
             </div>
         </div>
 
@@ -28,45 +38,66 @@
             @foreach (var mensagem in Model.Mensagens)
             {
                 <div class="message @(mensagem.Remetente == "eu" ? "sent" : "received")">
-                    @if (mensagem.Remetente != "eu" && !string.IsNullOrEmpty(mensagem.Avatar))
+                    @if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Texto)
                     {
-                        <img src="/whatsapp-static@(mensagem.Avatar)" alt="Avatar" class="message-avatar" />
-                    }
-
-                    <div class="message-bubble">
-                        @if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Texto)
-                        {
+                        <div class="message-bubble">
                             <p>@mensagem.Conteudo</p>
-                        }
-                        else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Imagem)
-                        {
-                            <img src="/whatsapp-assets@(mensagem.Midia)" alt="Imagem" class="message-image" />
-                        }
-                        else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Figurinha)
-                        {
-                            <img src="/whatsapp-static@(mensagem.Midia)" alt="Figurinha" class="message-sticker" />
-                        }
-                        else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Apagada)
-                        {
+                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
+                        </div>
+                    }
+                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Imagem)
+                    {
+                        <div class="message-bubble media">
+                            <img src="/whatsapp-assets@(mensagem.Midia ?? "")" alt="Imagem" class="message-image" />
+                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
+                        </div>
+                    }
+                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Figurinha)
+                    {
+                        <div class="message-bubble sticker">
+                            <img src="/whatsapp-assets@(mensagem.Midia ?? "")" alt="Figurinha" class="message-sticker" />
+                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
+                        </div>
+                    }
+                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Apagada)
+                    {
+                        <div class="message-bubble deleted">
                             <p class="deleted-message">🚫 Mensagem apagada</p>
-                        }
-                        else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Chamada)
-                        {
+                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
+                        </div>
+                    }
+                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Chamada)
+                    {
+                        <div class="message-bubble call">
                             <div class="call-message">
-                                <span class="call-icon">📞</span>
-                                <span>@mensagem.TipoChamada - @mensagem.DuracaoEmSegundos segundos</span>
+                                @if (mensagem.TipoChamada == ChatSimulador.Shared.Models.TipoChamada.VozPerdida ||
+                                                        mensagem.TipoChamada == ChatSimulador.Shared.Models.TipoChamada.VideoPerdida)
+                                {
+                                    <span class="call-icon missed">📞</span>
+                                }
+                                else
+                                {
+                                    <span class="call-icon">📞</span>
+                                }
+                                <div class="call-info">
+                                    <span class="call-name">João</span>
+                                    <span class="call-details">@mensagem.TipoChamada - @mensagem.DuracaoEmSegundos
+                                        segundos</span>
+                                </div>
                             </div>
-                        }
-
-                        <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
-                    </div>
+                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
+                        </div>
+                    }
                 </div>
             }
         </div>
 
         <div class="chat-input">
-            <input type="text" placeholder="Mensagem" />
-            <button>Enviar</button>
+            <button class="input-icon emoji-btn" title="Emoji">😀</button>
+            <input type="text" placeholder="Mensagem" class="input-field" />
+            <button class="input-icon attach-btn" title="Anexar">📎</button>
+            <button class="input-icon camera-btn" title="Câmera">📷</button>
+            <button class="input-icon voice-btn" title="Áudio">🎤</button>
         </div>
     </div>
 </body>

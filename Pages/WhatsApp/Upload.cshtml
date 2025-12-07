@@ -1,10 +1,9 @@
 @page "/whatsapp"
 @model ChatSimulador.Pages.WhatsApp.UploadModel
 @{
-    Layout = null;  // ← ADICIONE ESTA LINHA
+    Layout = null;
     ViewData["Title"] = "WhatsApp - Upload";
 }
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -17,72 +16,119 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
         .upload-container {
-            max-width: 600px;
-            margin: 50px auto;
             background: white;
-            border-radius: 12px;
             padding: 40px;
+            border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
         }
         h1 {
             color: #075e54;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        p {
+            color: #667781;
             margin-bottom: 30px;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        input[type="file"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
             font-size: 14px;
         }
-        button {
-            width: 100%;
-            padding: 14px;
-            background-color: #25d366;
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        .file-input-wrapper label {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #25d366;
             color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 24px;
             cursor: pointer;
+            font-weight: 500;
             transition: background 0.3s;
         }
-        button:hover {
-            background-color: #20bd5a;
+        .file-input-wrapper label:hover {
+            background: #20ba5a;
+        }
+        .file-name {
+            margin-top: 15px;
+            color: #667781;
+            font-size: 13px;
+            min-height: 20px;
+        }
+        button[type="submit"] {
+            background: #075e54;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button[type="submit"]:hover {
+            background: #064e45;
+        }
+        button[type="submit"]:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
         .back-link {
-            display: block;
-            text-align: center;
+            display: inline-block;
             margin-top: 20px;
             color: #075e54;
             text-decoration: none;
-            font-weight: 600;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="upload-container">
-        <h1>📤 Importar Conversa WhatsApp</h1>
+        <h1>📱 WhatsApp</h1>
+        <p>Importe um arquivo CSV com suas conversas</p>
+
         <form method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="arquivoCsv">Selecione o arquivo CSV:</label>
-                <input type="file" id="arquivoCsv" name="arquivoCsv" accept=".csv" required />
+            <div class="file-input-wrapper">
+                <input type="file" name="file" id="fileInput" accept=".csv" required onchange="updateFileName(this)" />
+                <label for="fileInput">Escolher arquivo CSV</label>
             </div>
-            <button type="submit">Carregar Conversa</button>
+            <div class="file-name" id="fileName">Nenhum arquivo selecionado</div>
+            <button type="submit" id="submitBtn" disabled>Importar e visualizar chat</button>
         </form>
+
         <a href="/" class="back-link">← Voltar ao início</a>
     </div>
+
+    <script>
+        function updateFileName(input) {
+            const fileName = document.getElementById('fileName');
+            const submitBtn = document.getElementById('submitBtn');
+            if (input.files && input.files[0]) {
+                fileName.textContent = input.files[0].name;
+                submitBtn.disabled = false;
+            } else {
+                fileName.textContent = 'Nenhum arquivo selecionado';
+                submitBtn.disabled = true;
+            }
+        }
+    </script>
 </body>
 </html>

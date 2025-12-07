@@ -13,6 +13,7 @@ C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.csproj.CoreCompileInputs.cache
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.MvcApplicationPartsAssemblyInfo.cache
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.RazorAssemblyInfo.cache
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.RazorAssemblyInfo.cs
+C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.sourcelink.json
 C:\ChatSimulador\obj\Debug\net8.0\staticwebassets.build.json
 C:\ChatSimulador\obj\Debug\net8.0\staticwebassets.development.json
 C:\ChatSimulador\obj\Debug\net8.0\staticwebassets\msbuild.ChatSimulador.Microsoft.AspNetCore.StaticWebAssets.props
