@@ -1,0 +1,49 @@
+/* _content/ChatSimulador/Pages/Shared/_Layout.cshtml.rz.scp.css */
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand[b-zs6wwm9ihj] {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a[b-zs6wwm9ihj] {
+  color: #0077cc;
+}
+
+.btn-primary[b-zs6wwm9ihj] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active[b-zs6wwm9ihj], .nav-pills .show > .nav-link[b-zs6wwm9ihj] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top[b-zs6wwm9ihj] {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom[b-zs6wwm9ihj] {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow[b-zs6wwm9ihj] {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy[b-zs6wwm9ihj] {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer[b-zs6wwm9ihj] {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}

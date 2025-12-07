@@ -1,0 +1,144 @@
+/* Balão de imagem ajustado ao tamanho da foto */
+.message-bubble.image-message {
+    padding: 4px;
+    max-width: 300px;
+    width: fit-content;
+}
+
+.message-bubble.image-message img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+/* Figurinha (tamanho fixo) */
+.message-bubble.sticker-message {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.message-bubble.sticker-message img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+/* Remove foto do contato no WhatsApp */
+.whatsapp .message-wrapper.received .message-avatar {
+    display: none;
+}
+
+/* Mantém foto no Instagram */
+.instagram .message-wrapper.received .message-avatar {
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Balão de mensagem */
+.message-bubble {
+    position: relative;
+    display: inline-block;
+    padding: 8px 12px 20px 12px; /* espaço pro horário */
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.message-wrapper.sent .message-bubble {
+    background-color: #d9fdd3;
+}
+
+/* Texto da mensagem */
+.message-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding-right: 40px; /* protege o horário */
+}
+
+/* Container do horário (inline com o texto) */
+.message-time {
+    position: absolute;
+    right: 8px;
+    bottom: 4px;
+    font-size: 11px;
+    color: #667781;
+    white-space: nowrap;
+}
+
+.message-wrapper.sent .message-time {
+    color: #506b55;
+}
+
+/* Balão de imagem */
+.image-bubble {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 8px;
+    position: relative;
+    display: inline-block;
+    max-width: 300px;
+}
+
+.image-bubble img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+}
+
+/* Horário no balão de imagem */
+.image-time {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    font-size: 11px;
+    color: white;
+    text-shadow: 0 0 4px rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Mensagem apagada */
+.message-deleted {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* Chamadas */
+.message-call {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.call-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.call-title {
+    font-weight: bold;
+    color: #000;
+}
+
+.call-subtitle {
+    font-size: 0.85em;
+    color: #667781;
+}
+
+.message-wrapper.sent {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start; /* mantém o balão colado à direita */
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+}

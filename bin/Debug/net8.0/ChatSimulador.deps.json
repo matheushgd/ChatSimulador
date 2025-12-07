@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "ChatSimulador/1.0.0": {
+        "runtime": {
+          "ChatSimulador.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ChatSimulador/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
