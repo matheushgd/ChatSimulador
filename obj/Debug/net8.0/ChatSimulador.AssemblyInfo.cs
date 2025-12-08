@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChatSimulador")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ab7e94d268efb444c503d764bdc43aaa85959d5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChatSimulador")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChatSimulador")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,87 +1,135 @@
-using System.Text;
 using ChatSimulador.Shared.Models;
+using System.Globalization;
 
 namespace ChatSimulador.Shared.Services
 {
     public class CsvService
     {
-        private readonly CsvConversor _csvConversor = new();
-
-        public List<Mensagem> LerCsv(Stream arquivoCsv)
+        public async Task<List<Mensagem>> LerCsvAsync(IFormFile file)
         {
             var mensagens = new List<Mensagem>();
-            using (var reader = new StreamReader(arquivoCsv, Encoding.UTF8))
+
+            using var reader = new StreamReader(file.OpenReadStream(), System.Text.Encoding.UTF8);
+
+            // Pula o header
+            var header = await reader.ReadLineAsync();
+            Console.WriteLine($"Header do CSV: {header}");
+
+            int linhaNumero = 1;
+            while (!reader.EndOfStream)
             {
-                reader.ReadLine(); // pula cabeçalho
-                string? linha;
-                while ((linha = reader.ReadLine()) != null)
+                var linha = await reader.ReadLineAsync();
+                linhaNumero++;
+
+                if (string.IsNullOrWhiteSpace(linha)) continue;
+
+                // Remove aspas duplas da linha inteira
+                linha = linha.Trim('"');
+
+                var campos = linha.Split(';');
+
+                if (campos.Length < 9)
                 {
-                    var colunas = ParseCsvLine(linha);
-                    if (colunas.Length != 15) continue;
+                    Console.WriteLine($"Linha {linhaNumero} ignorada: menos de 9 campos");
+                    continue;
+                }
 
-                    try
+                try
+                {
+                    // Verifica se é chamada
+                    bool ehChamada = campos[12].Trim().ToLower() == "sim";
+
+                    var mensagem = new Mensagem
                     {
-                        var dto = new MensagemCsvDTO
-                        {
-                            Plataforma = colunas[0],
-                            DataHora = colunas[1],
-                            Remetente = colunas[2],
-                            NomeExibicao = colunas[3],
-                            Avatar = colunas[4],
-                            TipoMensagem = colunas[5],
-                            Conteudo = colunas[6],
-                            Midia = colunas[7],
-                            StatusLeitura = colunas[8],
-                            BorrarNome = colunas[9],
-                            BorrarAvatar = colunas[10],
-                            BorrarMidia = colunas[11],
-                            EhChamada = colunas[12],
-                            TipoChamada = colunas[13],
-                            Duracao = colunas[14]
-                        };
+                        Plataforma = ParseEnum<PlataformaChat>(campos[0]),
+                        DataHora = ParseDateTime(campos[1]),
+                        Remetente = campos[2].Trim(),
+                        NomeExibicao = campos[3].Trim(),
+                        Avatar = campos[4].Trim(),
+                        TipoMensagem = ehChamada ? TipoMensagem.Chamada : ParseEnum<TipoMensagem>(campos[5]),
+                        Conteudo = campos[6].Trim(),
+                        Midia = campos[7].Trim(),
+                        StatusLeitura = ParseEnum<StatusLeitura>(campos[8]),
+                        BorrarNome = campos[9].Trim().ToLower() == "sim",
+                        BorrarAvatar = campos[10].Trim().ToLower() == "sim",
+                        BorrarMidia = campos[11].Trim().ToLower() == "sim",
+                        TipoChamada = ehChamada && campos.Length > 13 ? ParseEnumNullable<TipoChamada>(campos[13]) : null,
+                        DuracaoEmSegundos = campos.Length > 14 && int.TryParse(campos[14], out var duracao) ? duracao : null
+                    };
 
-                        var mensagem = _csvConversor.Converter(dto);
-                        mensagem.Id = Guid.NewGuid();
-                        mensagens.Add(mensagem);
-                    }
-                    catch { }
+                    mensagens.Add(mensagem);
+                    Console.WriteLine($"Linha {linhaNumero} processada: {mensagem.NomeExibicao} - {mensagem.TipoMensagem}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao processar linha {linhaNumero}: {ex.Message}");
                 }
             }
-            return mensagens.OrderBy(m => m.DataHora).ToList();
+
+            Console.WriteLine($"Total de mensagens processadas: {mensagens.Count}");
+            return mensagens;
         }
 
-        private string[] ParseCsvLine(string line)
+        private DateTime ParseDateTime(string? value)
         {
-            line = line.Trim();
-            if (line.StartsWith("\"") && line.EndsWith("\""))
-                line = line.Substring(1, line.Length - 2);
+            if (string.IsNullOrWhiteSpace(value))
+                return DateTime.Now;
 
-            var result = new List<string>();
-            var current = new StringBuilder();
-            bool inQuotes = false;
-
-            for (int i = 0; i < line.Length; i++)
+            // Formato esperado: 2025-02-01 08:45:00
+            string[] formatos = new[]
             {
-                char c = line[i];
-                if (c == '"')
+                "yyyy-MM-dd HH:mm:ss",
+                "yyyy-MM-dd HH:mm",
+                "dd/MM/yyyy HH:mm:ss",
+                "dd/MM/yyyy HH:mm"
+            };
+
+            foreach (var formato in formatos)
+            {
+                if (DateTime.TryParseExact(value.Trim(), formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var resultado))
                 {
-                    if (i + 1 < line.Length && line[i + 1] == '"')
-                    {
-                        current.Append('"');
-                        i++;
-                    }
-                    else inQuotes = !inQuotes;
+                    return resultado;
                 }
-                else if (c == ';' && !inQuotes)
-                {
-                    result.Add(current.ToString());
-                    current.Clear();
-                }
-                else current.Append(c);
             }
-            result.Add(current.ToString());
-            while (result.Count < 15) result.Add("");
-            return result.ToArray();
+
+            if (DateTime.TryParse(value, out var resultadoGenerico))
+            {
+                return resultadoGenerico;
+            }
+
+            Console.WriteLine($"AVISO: Data '{value}' não reconhecida, usando DateTime.Now");
+            return DateTime.Now;
+        }
+
+        private T ParseEnum<T>(string? value) where T : struct, Enum
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return default;
+
+            // Remove espaços e tenta parse
+            value = value.Trim();
+
+            // Tenta parse case-insensitive
+            if (Enum.TryParse<T>(value, true, out var result))
+                return result;
+
+            // Tenta remover acentos e espaços (ex: "Voz Perdida" -> "VozPerdida")
+            value = value.Replace(" ", "");
+            if (Enum.TryParse<T>(value, true, out result))
+                return result;
+
+            Console.WriteLine($"AVISO: Valor '{value}' não mapeado para enum {typeof(T).Name}, usando default");
+            return default;
+        }
+
+        private T? ParseEnumNullable<T>(string? value) where T : struct, Enum
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            value = value.Trim().Replace(" ", "");
+
+            return Enum.TryParse<T>(value, true, out var result) ? result : null;
         }
     }
 }

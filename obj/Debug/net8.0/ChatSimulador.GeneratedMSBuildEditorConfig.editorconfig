@@ -26,8 +26,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ChatSimulador/Pages/Instagram/Upload.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5zdGFncmFtXFVwbG9hZC5jc2h0bWw=
+[C:/ChatSimulador/Pages/Plataformas/Instagram/Upload.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhdGFmb3JtYXNcSW5zdGFncmFtXFVwbG9hZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/ChatSimulador/Pages/Plataformas/Uber/Upload.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhdGFmb3JtYXNcVWJlclxVcGxvYWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/ChatSimulador/Pages/Plataformas/WhatsApp/Chat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhdGFmb3JtYXNcV2hhdHNBcHBcQ2hhdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/ChatSimulador/Pages/Plataformas/WhatsApp/Upload.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhdGFmb3JtYXNcV2hhdHNBcHBcVXBsb2FkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/ChatSimulador/Pages/Privacy.cshtml]
@@ -36,18 +48,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/ChatSimulador/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/ChatSimulador/Pages/Uber/Upload.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVWJlclxVcGxvYWQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/ChatSimulador/Pages/WhatsApp/Chat.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2hhdHNBcHBcQ2hhdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/ChatSimulador/Pages/WhatsApp/Upload.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2hhdHNBcHBcVXBsb2FkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/ChatSimulador/Pages/_ViewImports.cshtml]

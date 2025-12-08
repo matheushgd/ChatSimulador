@@ -1,54 +1,52 @@
-using ChatSimulador.Shared.Services;
+﻿using ChatSimulador.Shared.Services;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<CsvService>();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
+    app.UseHsts();
 }
-
-app.UseStaticFiles();
 
 // Servir arquivos estáticos do WhatsApp
-var whatsappPath = Path.Combine(builder.Environment.ContentRootPath, "Pages", "WhatsApp", "wwwroot");
-if (Directory.Exists(whatsappPath))
+app.UseStaticFiles(new StaticFileOptions
 {
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(whatsappPath),
-        RequestPath = "/whatsapp-assets"
-    });
-}
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "Pages", "Plataformas", "WhatsApp", "wwwroot")),
+    RequestPath = "/whatsapp"
+});
 
 // Servir arquivos estáticos do Instagram
-var instagramPath = Path.Combine(builder.Environment.ContentRootPath, "Pages", "Instagram", "wwwroot");
-if (Directory.Exists(instagramPath))
+app.UseStaticFiles(new StaticFileOptions
 {
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(instagramPath),
-        RequestPath = "/instagram-assets"
-    });
-}
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "Pages", "Plataformas", "Instagram", "wwwroot")),
+    RequestPath = "/instagram-assets"
+});
 
 // Servir arquivos estáticos do Uber
-var uberPath = Path.Combine(builder.Environment.ContentRootPath, "Pages", "Uber", "wwwroot");
-if (Directory.Exists(uberPath))
+app.UseStaticFiles(new StaticFileOptions
 {
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(uberPath),
-        RequestPath = "/uber-assets"
-    });
-}
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "Pages", "Plataformas", "Uber", "wwwroot")),
+    RequestPath = "/uber-assets"
+});
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthorization();
+
 app.MapRazorPages();
 
 app.Run();

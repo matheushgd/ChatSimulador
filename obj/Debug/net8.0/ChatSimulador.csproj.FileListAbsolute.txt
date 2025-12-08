@@ -6,6 +6,8 @@ C:\ChatSimulador\bin\Debug\net8.0\ChatSimulador.deps.json
 C:\ChatSimulador\bin\Debug\net8.0\ChatSimulador.runtimeconfig.json
 C:\ChatSimulador\bin\Debug\net8.0\ChatSimulador.dll
 C:\ChatSimulador\bin\Debug\net8.0\ChatSimulador.pdb
+C:\ChatSimulador\bin\Debug\net8.0\CsvHelper.dll
+C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.csproj.AssemblyReference.cache
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.GeneratedMSBuildEditorConfig.editorconfig
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.AssemblyInfoInputs.cache
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.AssemblyInfo.cs
@@ -24,6 +26,7 @@ C:\ChatSimulador\obj\Debug\net8.0\staticwebassets.pack.json
 C:\ChatSimulador\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\ChatSimulador\obj\Debug\net8.0\scopedcss\bundle\ChatSimulador.styles.css
 C:\ChatSimulador\obj\Debug\net8.0\scopedcss\projectbundle\ChatSimulador.bundle.scp.css
+C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.csproj.CopyComplete
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.dll
 C:\ChatSimulador\obj\Debug\net8.0\refint\ChatSimulador.dll
 C:\ChatSimulador\obj\Debug\net8.0\ChatSimulador.pdb

@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using ChatSimulador.Shared.Models;
 
-namespace ChatSimulador.Pages.WhatsApp
+namespace ChatSimulador.Pages.Plataformas.WhatsApp
 {
     public class ChatModel : PageModel
     {
