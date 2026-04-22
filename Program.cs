@@ -21,7 +21,7 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(builder.Environment.ContentRootPath, "Pages", "Plataformas", "WhatsApp", "wwwroot")),
-    RequestPath = "/whatsapp"
+    RequestPath = ""
 });
 
 // Servir arquivos estáticos do Instagram

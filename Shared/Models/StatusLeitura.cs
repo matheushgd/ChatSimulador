@@ -2,8 +2,15 @@ namespace ChatSimulador.Shared.Models
 {
     public enum StatusLeitura
     {
-        Enviado,
+        // Mensagem enviada, mas não entregue
+        Enviada,
+        // Mensagem entregue, mas não lida
         Entregue,
-        Lido
+        // Mensagem lida
+        Lida,
+        // Mensagem não enviada (erro ou rascunho)
+        NaoEnviada,
+        // Mensagem apagada (não é um status de leitura, mas um estado da mensagem)
+        Apagada
     }
 }

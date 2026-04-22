@@ -1,109 +1,110 @@
-﻿@page "/whatsapp/chat"
+﻿@page
 @model ChatSimulador.Pages.Plataformas.WhatsApp.ChatModel
-@{
-    Layout = null;
-    ViewData["Title"] = "WhatsApp - Chat";
-}
-<!DOCTYPE html>
-<html lang="pt-BR">
+@using ChatSimulador.Shared.Models  <!-- ADICIONADO: Resolve o CS0103 para TipoMensagem -->
 
+@{
+    ViewData["Title"] = "Chat WhatsApp";
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="/whatsapp-assets/css/chat.css" />
-    <link rel="stylesheet" href="/whatsapp-assets/css/header.css" />
-    <link rel="stylesheet" href="/whatsapp-assets/css/inputbar.css" />
-    <script src="/whatsapp-assets/js/chat.js"></script>
-
+    <link rel="stylesheet" href="/whatsapp/wwwroot/css/chat.css" />  <!-- Caminho direto para css/ -->
 </head>
-
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <a href="/whatsapp" class="back-button">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                </svg>
-            </a>
-            <img src="/whatsapp-assets/avatares/joao.png" alt="Avatar" class="header-avatar" />
-            <div class="header-info">
-                <h3>João</h3>
-                <span class="header-status">online</span>
-            </div>
-            <div class="header-actions">
-                <button title="Chamada de voz">📞</button>
-                <button title="Chamada de vídeo">📹</button>
-                <button title="Mais opções">⋮</button>
-            </div>
+    <!-- Header Superior (branco, com ícones de voltar, câmera, clipe) -->
+    <div class="header-whatsapp">
+        <img src="@Model.ContatoAvatar" class="avatar" alt="Avatar" />  <!-- /whatsapp/avatares/joao.png -->
+
+        <div>
+            <div class="nome">@Model.NomeContato</div>
+            <div class="status">online</div>
         </div>
 
-        <div class="chat-messages">
-            @foreach (var mensagem in Model.Mensagens)
-            {
-                <div class="message @(mensagem.Remetente == "eu" ? "sent" : "received")">
-                    @if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Texto)
-                    {
-                        <div class="message-bubble">
-                            <p>@mensagem.Conteudo</p>
-                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
-                        </div>
-                    }
-                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Imagem)
-                    {
-                        <div class="message-bubble media">
-                            <img src="/whatsapp-assets@(mensagem.Midia ?? "")" alt="Imagem" class="message-image" />
-                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
-                        </div>
-                    }
-                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Figurinha)
-                    {
-                        <div class="message-bubble sticker">
-                            <img src="/whatsapp-assets@(mensagem.Midia ?? "")" alt="Figurinha" class="message-sticker" />
-                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
-                        </div>
-                    }
-                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Apagada)
-                    {
-                        <div class="message-bubble deleted">
-                            <p class="deleted-message">🚫 Mensagem apagada</p>
-                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
-                        </div>
-                    }
-                    else if (mensagem.TipoMensagem == ChatSimulador.Shared.Models.TipoMensagem.Chamada)
-                    {
-                        <div class="message-bubble call">
-                            <div class="call-message">
-                                @if (mensagem.TipoChamada == ChatSimulador.Shared.Models.TipoChamada.VozPerdida ||
-                                                        mensagem.TipoChamada == ChatSimulador.Shared.Models.TipoChamada.VideoPerdida)
-                                {
-                                    <span class="call-icon missed">📞</span>
-                                }
-                                else
-                                {
-                                    <span class="call-icon">📞</span>
-                                }
-                                <div class="call-info">
-                                    <span class="call-name">João</span>
-                                    <span class="call-details">@mensagem.TipoChamada - @mensagem.DuracaoEmSegundos
-                                        segundos</span>
-                                </div>
-                            </div>
-                            <span class="message-time">@mensagem.DataHora.ToString("HH:mm")</span>
-                        </div>
-                    }
-                </div>
-            }
-        </div>
-
-        <div class="chat-input">
-            <button class="input-icon emoji-btn" title="Emoji">😀</button>
-            <input type="text" placeholder="Mensagem" class="input-field" />
-            <button class="input-icon attach-btn" title="Anexar">📎</button>
-            <button class="input-icon camera-btn" title="Câmera">📷</button>
-            <button class="input-icon voice-btn" title="Áudio">🎤</button>
+        <div class="icones">
+            <img src="/whatsapp/assets/icons/back.svg" class="icone-action" alt="Voltar" />  <!-- SVG de icons/ -->
+            <img src="/whatsapp/assets/icons/camera.svg" class="icone-action" alt="Câmera" />
+            <img src="/whatsapp/assets/icons/clips.svg" class="icone-action" alt="Clipe" />
         </div>
     </div>
-</body>
 
+    <!-- Conteúdo do Chat (fundo com bg.png de assets/, balões sem foto no texto para WhatsApp) -->
+    <div class="chat-container">
+        @foreach (var msg in Model.Mensagens)
+        {
+            <!-- Balão de Data (aparece ao rolar: Hoje/Ontem/data completa, desaparece ao parar via CSS) -->
+            @if (msg.DataBalao.HasValue)
+            {
+                @{
+                    var dataBalao = msg.DataBalao.Value.Date;
+                    string textoData = dataBalao == DateTime.Today ? "Hoje" :
+                                       dataBalao == DateTime.Today.AddDays(-1) ? "Ontem" :
+                                       dataBalao.ToString("dd 'de' MMMM 'de' yyyy");
+                }
+                <div class="balao-data">@textoData</div>
+            }
+
+            @if (msg.TipoMensagem == TipoMensagem.Apagada || msg.StatusLeitura == "Apagada")
+            {
+                <div class="balao apagada @(msg.Remetente == "Você" ? "recebida" : "enviada")">
+                    Mensagem apagada
+                    <span class="horario">@msg.DataHora.ToString("HH:mm")</span>  <!-- Horário no canto inferior direito -->
+                </div>
+            }
+            else if (msg.TipoMensagem == TipoMensagem.Chamada)
+            {
+                <div class="balao chamada @(msg.Remetente == "Você" ? "recebida" : "enviada")">
+                    <img src="@(msg.IsChamada == "Perdida" ? "/whatsapp/assets/icons/seta.png" : "/whatsapp/assets/icons/seta.png")" class="icone-chamada @(msg.IsChamada == "Perdida" ? "vermelho" : "")" alt="Chamada" />
+                    Chamada @(msg.IsChamada ?? "recebida")
+                    <span class="horario">@msg.DataHora.ToString("HH:mm")</span>
+                </div>
+            }
+            else if (msg.TipoMensagem == TipoMensagem.Imagem || msg.TipoMensagem == TipoMensagem.Figurinha)
+            {
+                <div class="balao balao-imagem @(msg.Remetente == "Você" ? "recebida" : "enviada")">
+                    @if (msg.Borrado)
+                    {
+                        <img src="/whatsapp/uploads/@msg.Midia" style="filter: blur(5px);" alt="Mídia borrada" />
+                    }
+                    else
+                    {
+                        <img src="/whatsapp/uploads/@msg.Midia" style="@(msg.TipoMensagem == TipoMensagem.Figurinha ? "width:180px;" : "max-width:100%;")" alt="Mídia" />  <!-- Figurinhas fixas 180px, imagens ajustam -->
+                    }
+                    @if (!string.IsNullOrEmpty(msg.Reacao))
+                    {
+                        <span class="reacao">@msg.Reacao</span>  <!-- Emoji de reação ao lado -->
+                    }
+                    <span class="horario">@msg.DataHora.ToString("HH:mm")</span>
+                </div>
+            }
+            else  <!-- Texto (sem foto do contato para WhatsApp) -->
+            {
+                <div class="balao @(msg.Remetente == "Você" ? "recebida" : "enviada")">
+                    @if (msg.IsGrupo && msg.Remetente != "Você")
+                    {
+                        <strong>@msg.Remetente: </strong>  <!-- Prefixo para grupos -->
+                    }
+                    @msg.Conteudo
+                    @if (!string.IsNullOrEmpty(msg.Reacao))
+                    {
+                        <span class="reacao">@msg.Reacao</span>
+                    }
+                    <span class="horario">@msg.DataHora.ToString("HH:mm")</span>  <!-- Fora do fluxo, canto inferior direito -->
+                </div>
+            }
+        }
+    </div>
+
+    <!-- Barra Inferior (bordas ovais no input, ícones PNG/SVG do WhatsApp Android, fundo visível entre ícones) -->
+    <div class="barra-inferior">
+        <img src="/whatsapp/assets/stickers.png" class="icone-action" alt="Stickers" />  <!-- PNG de assets/ -->
+        <input type="text" class="input-msg" placeholder="Mensagem" />
+        <img src="/whatsapp/assets/clip.png" class="icone-action" alt="Clipe" />
+        <img src="/whatsapp/assets/photo.png" class="icone-action" alt="Foto" />
+        <img src="/whatsapp/assets/audio.png" class="icone-action" alt="Áudio" />
+    </div>
+</body>
 </html>
